@@ -3,22 +3,22 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+# ShowTheme model
+class ShowTheme(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 # AstronomyShow model
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    show_theme = models.ManyToManyField(ShowTheme)
 
     def __str__(self):
         return self.title
-
-
-# ShowTheme model
-class ShowTheme(models.Model):
-    name = models.CharField(max_length=255)
-    astronomy_show = models.ManyToManyField(AstronomyShow, related_name="themes")
-
-    def __str__(self):
-        return self.name
 
 
 # PlanetariumDome model
@@ -37,15 +37,22 @@ class PlanetariumDome(models.Model):
 
 # ShowSession model
 class ShowSession(models.Model):
-    astronomy_show = models.ForeignKey(AstronomyShow, on_delete=models.CASCADE)
-    planetarium_dome = models.ForeignKey(PlanetariumDome, on_delete=models.CASCADE)
+    astronomy_show = models.ForeignKey(
+        AstronomyShow, on_delete=models.CASCADE
+    )
+    planetarium_dome = models.ForeignKey(
+        PlanetariumDome, on_delete=models.CASCADE
+    )
     show_time = models.DateTimeField()
 
     class Meta:
         ordering = ["-show_time"]
 
     def __str__(self):
-        return f"{self.astronomy_show.title} at {self.show_time} in {self.planetarium_dome.name}"
+        return (
+            f"{self.astronomy_show.title} at"
+            f" {self.show_time} in {self.planetarium_dome.name}"
+        )
 
 
 # Reservation model
