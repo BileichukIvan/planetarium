@@ -1,11 +1,12 @@
 from datetime import datetime
 
 from django.db.models import F, Count
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 
 from planetarium.models import (
     ShowTheme,
@@ -98,6 +99,20 @@ class AstronomyShowViewSet(
 
         return AstronomyShowSerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="title",
+                type={"type": "string"},
+                description="Filter by title id (ex. ?titles=Looper)",
+            ),
+            OpenApiParameter(
+                name="show theme",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by show theme id (ex. ?show theme=1,4)",
+            ),
+        ]
+    )
     def list(self, request, *args, **kwargs):
         """Get list of astronomy shows."""
         return super().list(request, *args, **kwargs)
@@ -144,6 +159,20 @@ class ShowSessionViewSet(viewsets.ModelViewSet):
 
         return ShowSessionSerializer
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="date",
+                type={"type": "string", "format": "date"},
+                description="Filter by date id (ex. ?date=2024-10-10)",
+            ),
+            OpenApiParameter(
+                name="astronomy show",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by astronomy show id (ex. ?astronomy show=4)",
+            ),
+        ]
+    )
     def list(self, request, *args, **kwargs):
         """Get list of astronomy show sessions."""
         return super().list(request, *args, **kwargs)
