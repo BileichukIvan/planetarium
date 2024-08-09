@@ -146,7 +146,7 @@ class ShowSessionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(show_time__date=date)
 
         if astronomy_show_id_str:
-            queryset = queryset.filter(movie_id=int(astronomy_show_id_str))
+            queryset = queryset.filter(astronomy_show_id=int(astronomy_show_id_str))
 
         return queryset
 
@@ -189,7 +189,7 @@ class ReservationViewSet(
     GenericViewSet,
 ):
     queryset = Reservation.objects.prefetch_related(
-        "tickets__show_session__movie",
+        "tickets__show_session__astronomy_show",
         "tickets__show_session__planetarium_dome"
     )
     serializer_class = ReservationSerializer

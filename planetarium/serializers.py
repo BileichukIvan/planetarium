@@ -52,7 +52,7 @@ class AstronomyShowListSerializer(serializers.ModelSerializer):
 
 
 class AstronomyShowDetailSerializer(serializers.ModelSerializer):
-    genres = ShowThemeSerializer(many=True, read_only=True)
+    show_theme = ShowThemeSerializer(many=True, read_only=True)
 
     class Meta:
         model = AstronomyShow
@@ -109,7 +109,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class TicketListSerializer(TicketSerializer):
-    movie_session = ShowSessionListSerializer(many=False, read_only=True)
+    show_session = ShowSessionListSerializer(many=False, read_only=True)
 
 
 class TicketSeatsSerializer(TicketSerializer):
@@ -142,7 +142,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             tickets_data = validated_data.pop("tickets")
             reservation = Reservation.objects.create(**validated_data)
             for ticket_data in tickets_data:
-                Ticket.objects.create(order=reservation, **ticket_data)
+                Ticket.objects.create(reservation=reservation, **ticket_data)
             return reservation
 
 
