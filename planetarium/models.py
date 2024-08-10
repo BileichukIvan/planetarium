@@ -92,10 +92,11 @@ class Ticket(models.Model):
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise error_to_raise(
                     {
-                        ticket_attr_name: f"{ticket_attr_name} "
-                                          f"number must be in available range: "
-                                          f"(1, {planetarium_dome_attr_name}): "
-                                          f"(1, {count_attrs})"
+                        ticket_attr_name:
+                            f"{ticket_attr_name}"
+                            f" number must be in available range:"
+                            f" (1, {planetarium_dome_attr_name}):"
+                            f" (1, {count_attrs})"
                     }
                 )
 
@@ -124,4 +125,6 @@ class Ticket(models.Model):
         ordering = ["row", "seat"]
 
     def __str__(self):
-        return f"Ticket for {self.show_session} in row {self.row}, seat {self.seat}"
+        return (f"Ticket for "
+                f"{self.show_session} in row "
+                f"{self.row}, seat {self.seat}")

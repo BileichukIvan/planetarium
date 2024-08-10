@@ -101,7 +101,7 @@ class PlanetariumViewTests(APITestCase):
         url = reverse("planetarium:reservation-list")
         data = {
             "tickets": [
-                {"row": 15, "seat": 25, "show_session": self.show_session.id},  # Invalid seat/row
+                {"row": 15, "seat": 25, "show_session": self.show_session.id},
             ]
         }
         response = self.client.post(url, data, format="json")
