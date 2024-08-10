@@ -7,14 +7,22 @@ from planetarium.serializers import (
     TicketSerializer,
     ReservationSerializer,
 )
-from planetarium.models import ShowTheme, AstronomyShow, PlanetariumDome, ShowSession, Reservation, Ticket
+from planetarium.models import (
+    ShowTheme,
+    AstronomyShow,
+    PlanetariumDome,
+    ShowSession,
+    Reservation,
+)
 
 
 class PlanetariumSerializerTests(TestCase):
 
     def setUp(self):
         self.show_theme = ShowTheme.objects.create(name="Solar System")
-        self.dome = PlanetariumDome.objects.create(name="Main Dome", rows=10, seats_in_row=20)
+        self.dome = PlanetariumDome.objects.create(
+            name="Main Dome", rows=10, seats_in_row=20
+        )
         self.astronomy_show = AstronomyShow.objects.create(
             title="Exploring the Solar System",
             description="A journey through the solar system."
@@ -32,12 +40,21 @@ class PlanetariumSerializerTests(TestCase):
 
     def test_astronomy_show_serializer(self):
         serializer = AstronomyShowSerializer(instance=self.astronomy_show)
-        self.assertEqual(serializer.data["title"], "Exploring the Solar System")
-        self.assertEqual(serializer.data["description"], "A journey through the solar system.")
+        self.assertEqual(
+            serializer.data["title"],
+            "Exploring the Solar System"
+        )
+        self.assertEqual(
+            serializer.data["description"],
+            "A journey through the solar system."
+        )
 
     def test_show_session_serializer(self):
         serializer = ShowSessionSerializer(instance=self.show_session)
-        self.assertEqual(serializer.data["astronomy_show"], self.astronomy_show.id)
+        self.assertEqual(
+            serializer.data["astronomy_show"],
+            self.astronomy_show.id
+        )
 
     def test_ticket_serializer_validation(self):
         data = {

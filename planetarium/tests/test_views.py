@@ -26,7 +26,9 @@ class PlanetariumViewTests(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         self.show_theme = ShowTheme.objects.create(name="Solar System")
-        self.dome = PlanetariumDome.objects.create(name="Main Dome", rows=10, seats_in_row=20)
+        self.dome = PlanetariumDome.objects.create(
+            name="Main Dome", rows=10, seats_in_row=20
+        )
         self.astronomy_show = AstronomyShow.objects.create(
             title="Exploring the Solar System",
             description="A journey through the solar system."
@@ -83,7 +85,9 @@ class PlanetariumViewTests(APITestCase):
         response = self.client.get(url, {"title": "Solar"}, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["title"], "Exploring the Solar System")
+        self.assertEqual(
+            response.data[0]["title"], "Exploring the Solar System"
+        )
 
     def test_list_show_sessions(self):
         """Test listing show sessions"""
